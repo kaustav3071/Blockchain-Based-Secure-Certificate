@@ -69,12 +69,9 @@ const AllCertificates = () => {
             <thead className="bg-navy-50 border-b border-gray-200">
               <tr>
                 <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Cert ID</th>
-                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Student</th>
-                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Course</th>
-                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">University</th>
-                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Year</th>
-                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Status</th>
+                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Issued By</th>
                 <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Date</th>
+                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Status</th>
                 <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Actions</th>
               </tr>
             </thead>
@@ -82,10 +79,10 @@ const AllCertificates = () => {
               {certificates.map((cert) => (
                 <tr key={cert._id} className="hover:bg-gray-50">
                   <td className="px-5 py-3.5 font-mono text-xs text-navy-600">{cert.certId}</td>
-                  <td className="px-5 py-3.5 font-medium text-navy-800">{cert.studentName}</td>
-                  <td className="px-5 py-3.5 text-navy-600">{cert.course}</td>
-                  <td className="px-5 py-3.5 text-navy-600">{cert.universityName}</td>
-                  <td className="px-5 py-3.5 text-navy-600">{cert.year}</td>
+                  <td className="px-5 py-3.5 font-medium text-navy-800">{cert.issuedBy?.organization || cert.issuedBy?.name || "-"}</td>
+                  <td className="px-5 py-3.5 text-navy-500">
+                    {new Date(cert.createdAt).toLocaleDateString()}
+                  </td>
                   <td className="px-5 py-3.5">
                     {cert.revoked ? (
                       <span className="text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded-full font-medium">Revoked</span>
@@ -93,22 +90,12 @@ const AllCertificates = () => {
                       <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium">Active</span>
                     )}
                   </td>
-                  <td className="px-5 py-3.5 text-navy-500">
-                    {new Date(cert.createdAt).toLocaleDateString()}
-                  </td>
                   <td className="px-5 py-3.5">
-                    <div className="flex gap-3">
-                      {cert.fileUrl && (
-                        <a href={cert.fileUrl} target="_blank" rel="noreferrer" className="text-xs text-navy-600 hover:text-navy-800 font-medium">
-                          View
-                        </a>
-                      )}
-                      {!cert.revoked && (
-                        <button onClick={() => handleRevoke(cert.certId)} className="text-xs text-red-600 hover:text-red-800 font-medium">
-                          Revoke
-                        </button>
-                      )}
-                    </div>
+                    {!cert.revoked && (
+                      <button onClick={() => handleRevoke(cert.certId)} className="text-xs text-red-600 hover:text-red-800 font-medium">
+                        Revoke
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

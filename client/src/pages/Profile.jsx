@@ -151,7 +151,6 @@ const Profile = () => {
                     value={profileData.organization}
                     onChange={(e) => setProfileData({ ...profileData, organization: e.target.value })}
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                    placeholder="University of Delhi"
                   />
                 </div>
               )}
@@ -192,7 +191,6 @@ const Profile = () => {
                   onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
                   required
                   className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                  placeholder="Enter current password"
                 />
               </div>
 
@@ -206,7 +204,6 @@ const Profile = () => {
                     required
                     minLength={6}
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                    placeholder="Min 6 characters"
                   />
                 </div>
                 <div>
@@ -218,7 +215,6 @@ const Profile = () => {
                     required
                     minLength={6}
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                    placeholder="Confirm new password"
                   />
                 </div>
               </div>

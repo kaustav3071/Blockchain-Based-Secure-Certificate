@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const Dashboard = () => {
 
       {/* University Dashboard */}
       {user?.role === "university" && stats && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <StatCard
             label="Total Certificates"
             value={stats.total}
@@ -48,6 +50,7 @@ const Dashboard = () => {
               </svg>
             }
             accent="border-l-navy-600"
+            onClick={() => navigate("/my-certificates")}
           />
           <StatCard
             label="Issued Today"
@@ -58,6 +61,7 @@ const Dashboard = () => {
               </svg>
             }
             accent="border-l-green-500"
+            onClick={() => navigate("/my-certificates")}
           />
           <StatCard
             label="Revoked"
@@ -69,19 +73,20 @@ const Dashboard = () => {
             }
             accent="border-l-red-500"
             valueColor="text-red-600"
+            onClick={() => navigate("/my-certificates")}
           />
         </div>
       )}
 
       {/* Admin Dashboard Summary */}
       {user?.role === "admin" && stats && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-          <StatCard label="Total Users" value={stats.totalUsers} accent="border-l-navy-600" icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>} />
-          <StatCard label="Universities" value={stats.totalUniversities} accent="border-l-blue-500" icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>} />
-          <StatCard label="Pending Approvals" value={stats.pendingUniversities} accent="border-l-amber-500" valueColor={stats.pendingUniversities > 0 ? "text-amber-600" : undefined} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>} />
-          <StatCard label="Total Certificates" value={stats.totalCertificates} accent="border-l-green-500" icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>} />
-          <StatCard label="Total Verifications" value={stats.totalVerifications} accent="border-l-indigo-500" icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>} />
-          <StatCard label="Revoked" value={stats.revokedCertificates} accent="border-l-red-500" valueColor="text-red-600" icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <StatCard label="Total Users" value={stats.totalUsers} accent="border-l-navy-600" onClick={() => navigate("/admin/users")} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>} />
+          <StatCard label="Universities" value={stats.totalUniversities} accent="border-l-blue-500" onClick={() => navigate("/admin/users")} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>} />
+          <StatCard label="Pending Approvals" value={stats.pendingUniversities} accent="border-l-amber-500" valueColor={stats.pendingUniversities > 0 ? "text-amber-600" : undefined} onClick={() => navigate("/admin/users")} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>} />
+          <StatCard label="Total Certificates" value={stats.totalCertificates} accent="border-l-green-500" onClick={() => navigate("/admin/certificates")} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>} />
+          <StatCard label="Total Verifications" value={stats.totalVerifications} accent="border-l-indigo-500" onClick={() => navigate("/verification-history")} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>} />
+          <StatCard label="Revoked" value={stats.revokedCertificates} accent="border-l-red-500" valueColor="text-red-600" onClick={() => navigate("/admin/certificates")} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>} />
         </div>
       )}
 
@@ -103,7 +108,7 @@ const Dashboard = () => {
                 <Step number="1" text='Go to "Verify Certificate" in the sidebar' />
                 <Step number="2" text="Upload the certificate file (PDF or Image)" />
                 <Step number="3" text="The system hashes the file and queries the blockchain" />
-                <Step number="4" text="Blockchain confirms: Authentic, Not Found, or Revoked" />
+                <Step number="4" text="System confirms: Authentic, Unauthorized, or Revoked" />
               </div>
             </div>
           </div>
@@ -134,14 +139,24 @@ const Step = ({ number, text }) => (
   </div>
 );
 
-const StatCard = ({ label, value, icon, accent = "border-l-navy-600", valueColor = "text-navy-800" }) => {
+const StatCard = ({ label, value, icon, accent = "border-l-navy-600", valueColor = "text-navy-800", onClick }) => {
   return (
-    <div className={`bg-white border border-gray-200 rounded-lg shadow-sm p-5 border-l-4 ${accent}`}>
+    <div
+      onClick={onClick}
+      className={`bg-white border border-gray-200 rounded-lg shadow-sm p-5 border-l-4 ${accent} ${onClick ? "cursor-pointer hover:shadow-md hover:border-gray-300 transition-all group" : ""}`}
+    >
       <div className="flex items-center justify-between mb-3">
         <p className="text-xs text-navy-500 uppercase tracking-wide font-semibold">{label}</p>
         <div className="text-navy-400">{icon}</div>
       </div>
-      <p className={`text-3xl font-bold ${valueColor}`}>{value}</p>
+      <div className="flex items-end justify-between">
+        <p className={`text-3xl font-bold ${valueColor}`}>{value}</p>
+        {onClick && (
+          <svg className="w-4 h-4 text-navy-300 group-hover:text-navy-500 transition-colors mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        )}
+      </div>
     </div>
   );
 };

@@ -3,18 +3,9 @@ import api from "../services/api";
 import toast from "react-hot-toast";
 
 const IssueCertificate = () => {
-  const [formData, setFormData] = useState({
-    studentName: "",
-    course: "",
-    year: "",
-  });
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,9 +19,6 @@ const IssueCertificate = () => {
 
     try {
       const data = new FormData();
-      data.append("studentName", formData.studentName);
-      data.append("course", formData.course);
-      data.append("year", formData.year);
       data.append("certificate", file);
 
       const res = await api.post("/certificates/issue", data, {
@@ -39,7 +27,6 @@ const IssueCertificate = () => {
 
       setResult(res.data.certificate);
       toast.success("Certificate issued successfully!");
-      setFormData({ studentName: "", course: "", year: "" });
       setFile(null);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to issue certificate");
@@ -53,52 +40,12 @@ const IssueCertificate = () => {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-navy-900">Issue Certificate</h1>
         <p className="text-sm text-navy-500 mt-1">
-          Fill in the student details and upload the certificate. Its SHA-256 hash will be stored on the Ethereum blockchain.
+          Upload the certificate file. Its SHA-256 hash will be computed and stored on the Ethereum blockchain.
         </p>
       </div>
 
       <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-8">
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-navy-700 mb-1.5">Student Name</label>
-            <input
-              type="text"
-              name="studentName"
-              value={formData.studentName}
-              onChange={handleChange}
-              required
-              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-              placeholder="Enter student's full name"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-navy-700 mb-1.5">Course / Degree</label>
-              <input
-                type="text"
-                name="course"
-                value={formData.course}
-                onChange={handleChange}
-                required
-                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                placeholder="B.Tech CS"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-navy-700 mb-1.5">Year of Passing</label>
-              <input
-                type="text"
-                name="year"
-                value={formData.year}
-                onChange={handleChange}
-                required
-                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                placeholder="2025"
-              />
-            </div>
-          </div>
-
           <div>
             <label className="block text-sm font-medium text-navy-700 mb-1.5">Certificate File</label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-navy-400 cursor-pointer">
@@ -123,6 +70,12 @@ const IssueCertificate = () => {
                 )}
               </label>
             </div>
+          </div>
+
+          <div className="bg-navy-50 border border-navy-100 rounded-lg p-4">
+            <p className="text-xs text-navy-600 leading-relaxed">
+              <span className="font-semibold">How it works:</span> The file is hashed in memory using SHA-256. Only the hash is stored on the blockchain — the file itself is never uploaded or stored anywhere.
+            </p>
           </div>
 
           <button
@@ -155,9 +108,6 @@ const IssueCertificate = () => {
           </div>
           <div className="text-sm text-green-700 space-y-1.5">
             <p><span className="font-medium">Certificate ID:</span> {result.certId}</p>
-            <p><span className="font-medium">Student:</span> {result.studentName}</p>
-            <p><span className="font-medium">Course:</span> {result.course}</p>
-            <p><span className="font-medium">Year:</span> {result.year}</p>
             <p><span className="font-medium">Tx Hash:</span> <span className="font-mono text-xs break-all">{result.txHash}</span></p>
           </div>
         </div>

@@ -11,7 +11,7 @@ const {
   getStats,
 } = require("../controllers/certificateController");
 
-// Use memory storage so we can hash the file buffer before uploading to Cloudinary
+// Use memory storage to hash the file buffer (no cloud storage — fully decentralized)
 const memoryUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 // Issue certificate - university only

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const verificationSchema = new mongoose.Schema(
   {
-    certId: {
+    fileHash: {
       type: String,
       required: true,
     },
@@ -15,12 +15,6 @@ const verificationSchema = new mongoose.Schema(
       type: String,
       enum: ["authentic", "tampered", "not_found", "revoked"],
       required: true,
-    },
-    studentName: {
-      type: String,
-    },
-    universityName: {
-      type: String,
     },
   },
   { timestamps: true }

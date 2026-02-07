@@ -2,20 +2,14 @@ const { v4: uuidv4 } = require("uuid");
 const Certificate = require("../models/Certificate");
 const { generateHash, hashToBytes32 } = require("../utils/hashGenerator");
 const { getContract } = require("../config/blockchain");
-const cloudinary = require("../config/cloudinary");
 
 // Issue a new certificate (University only)
 const issueCertificate = async (req, res) => {
   try {
-    const { studentName, course, year } = req.body;
     const file = req.file;
 
     if (!file) {
       return res.status(400).json({ message: "Certificate file is required" });
-    }
-
-    if (!studentName || !course || !year) {
-      return res.status(400).json({ message: "All fields are required" });
     }
 
     // Generate unique certificate ID
@@ -23,18 +17,6 @@ const issueCertificate = async (req, res) => {
 
     // Generate SHA-256 hash from the ACTUAL file buffer
     const sha256Hash = generateHash(file.buffer);
-
-    // Upload file to Cloudinary manually (after hashing)
-    const cloudinaryResult = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: "certifychain", resource_type: "auto" },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
-      stream.end(file.buffer);
-    });
 
     // Store hash on blockchain
     const contract = getContract();
@@ -46,30 +28,20 @@ const issueCertificate = async (req, res) => {
     const tx = await contract.issueCertificate(certId, bytes32Hash);
     const receipt = await tx.wait();
 
-    // Save to MongoDB
+    // Save minimal record to MongoDB
     const certificate = await Certificate.create({
       certId,
-      studentName,
-      course,
-      year,
-      fileUrl: cloudinaryResult.secure_url,
-      filePublicId: cloudinaryResult.public_id,
       sha256Hash,
       txHash: receipt.hash,
       blockNumber: receipt.blockNumber,
       issuedBy: req.user._id,
-      universityName: req.user.organization || req.user.name,
     });
 
     res.status(201).json({
       message: "Certificate issued successfully",
       certificate: {
         certId: certificate.certId,
-        studentName: certificate.studentName,
-        course: certificate.course,
-        year: certificate.year,
         txHash: certificate.txHash,
-        fileUrl: certificate.fileUrl,
       },
     });
   } catch (error) {

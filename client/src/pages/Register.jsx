@@ -128,7 +128,6 @@ const Register = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                      placeholder="John Doe"
                     />
                   </div>
 
@@ -141,7 +140,6 @@ const Register = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                      placeholder="you@example.com"
                     />
                   </div>
 
@@ -155,7 +153,6 @@ const Register = () => {
                       required
                       minLength={6}
                       className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                      placeholder="Min 6 characters"
                     />
                   </div>
 
@@ -184,7 +181,6 @@ const Register = () => {
                         onChange={handleChange}
                         required
                         className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-500/20 focus:border-navy-500"
-                        placeholder="University of Delhi"
                       />
                     </div>
                   )}

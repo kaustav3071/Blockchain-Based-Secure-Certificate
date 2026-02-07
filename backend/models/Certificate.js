@@ -7,27 +7,6 @@ const certificateSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    studentName: {
-      type: String,
-      required: [true, "Student name is required"],
-      trim: true,
-    },
-    course: {
-      type: String,
-      required: [true, "Course is required"],
-      trim: true,
-    },
-    year: {
-      type: String,
-      required: [true, "Year is required"],
-    },
-    fileUrl: {
-      type: String,
-      required: true,
-    },
-    filePublicId: {
-      type: String,
-    },
     sha256Hash: {
       type: String,
       required: true,
@@ -42,10 +21,6 @@ const certificateSchema = new mongoose.Schema(
     issuedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
-    },
-    universityName: {
-      type: String,
       required: true,
     },
     revoked: {

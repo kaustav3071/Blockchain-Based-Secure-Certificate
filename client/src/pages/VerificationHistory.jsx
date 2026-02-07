@@ -26,7 +26,7 @@ const VerificationHistory = () => {
       authentic: <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium">Authentic</span>,
       tampered: <span className="text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded-full font-medium">Tampered</span>,
       revoked: <span className="text-xs bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full font-medium">Revoked</span>,
-      not_found: <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-medium">Not Found</span>,
+      not_found: <span className="text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded-full font-medium">Unauthorized</span>,
     };
     return badges[result] || <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-medium">{result}</span>;
   };
@@ -67,9 +67,7 @@ const VerificationHistory = () => {
           <table className="w-full text-sm">
             <thead className="bg-navy-50 border-b border-gray-200">
               <tr>
-                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Cert ID</th>
-                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Student</th>
-                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">University</th>
+                <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">File Hash</th>
                 <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Result</th>
                 <th className="text-left px-5 py-3.5 text-navy-600 font-semibold text-xs uppercase tracking-wide">Date & Time</th>
               </tr>
@@ -77,9 +75,7 @@ const VerificationHistory = () => {
             <tbody className="divide-y divide-gray-100">
               {history.map((item) => (
                 <tr key={item._id} className="hover:bg-gray-50">
-                  <td className="px-5 py-3.5 font-mono text-xs text-navy-600">{item.certId}</td>
-                  <td className="px-5 py-3.5 font-medium text-navy-800">{item.studentName || "-"}</td>
-                  <td className="px-5 py-3.5 text-navy-600">{item.universityName || "-"}</td>
+                  <td className="px-5 py-3.5 font-mono text-xs text-navy-600 max-w-[220px] truncate" title={item.fileHash}>{item.fileHash?.slice(0, 20)}...</td>
                   <td className="px-5 py-3.5">{getResultBadge(item.result)}</td>
                   <td className="px-5 py-3.5 text-navy-500">
                     {new Date(item.createdAt).toLocaleDateString()}{" "}
