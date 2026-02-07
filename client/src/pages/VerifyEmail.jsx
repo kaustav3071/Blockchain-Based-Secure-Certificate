@@ -23,7 +23,8 @@ const VerifyEmail = () => {
     const verify = async () => {
       try {
         // Use plain axios (no auth interceptor) for this public endpoint
-        const res = await axios.get(`/api/auth/verify-email?token=${token}`);
+        const baseURL = import.meta.env.VITE_API_URL || "/api";
+        const res = await axios.get(`${baseURL}/auth/verify-email?token=${token}`);
         setStatus("success");
         setMessage(res.data.message);
       } catch (error) {
