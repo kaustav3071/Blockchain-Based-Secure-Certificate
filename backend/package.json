@@ -8,5 +8,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "expressjs": "^1.0.1",
+    "mongoose": "^9.1.6"
   }
 }
