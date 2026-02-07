@@ -129,7 +129,7 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    if (!user.isVerified) {
+    if (user.isVerified === false && user.verificationToken) {
       return res.status(403).json({
         message: "Please verify your email before logging in. Check your inbox for the verification link.",
         needsVerification: true,
