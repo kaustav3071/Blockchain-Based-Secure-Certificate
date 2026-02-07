@@ -19,6 +19,16 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Ensure DB is connected before handling any request (critical for Vercel serverless)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ message: "Database connection failed" });
+  }
+});
+
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/certificates", require("./routes/certificateRoutes"));
@@ -46,14 +56,15 @@ app.get("/api/seed-admin", async (req, res) => {
   }
 });
 
-// Connect DB and start server
-const PORT = process.env.PORT || 5000;
-
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+// Start server only when running locally (Vercel manages the server in production)
+if (process.env.VERCEL !== "1") {
+  const PORT = process.env.PORT || 5000;
+  connectDB().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
   });
-});
+}
 
 // Export for Vercel serverless
 module.exports = app;
