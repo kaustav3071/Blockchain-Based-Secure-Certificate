@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../services/api";
 import toast from "react-hot-toast";
 
@@ -6,6 +6,24 @@ const VerifyCertificate = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [universities, setUniversities] = useState([]);
+  const [selectedUniversity, setSelectedUniversity] = useState("");
+  const [loadingUniversities, setLoadingUniversities] = useState(true);
+
+  // Fetch universities on mount
+  useEffect(() => {
+    const fetchUniversities = async () => {
+      try {
+        const res = await api.get("/verify/universities");
+        setUniversities(res.data);
+      } catch (error) {
+        console.error("Failed to fetch universities:", error);
+      } finally {
+        setLoadingUniversities(false);
+      }
+    };
+    fetchUniversities();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,6 +96,51 @@ const VerifyCertificate = () => {
 
       <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-8">
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* University Dropdown */}
+          <div>
+            <label className="block text-sm font-medium text-navy-700 mb-1.5">
+              Select University / Institution
+            </label>
+            {loadingUniversities ? (
+              <div className="flex items-center gap-2 text-sm text-navy-500">
+                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+                Loading universities...
+              </div>
+            ) : (
+              <>
+                <select
+                  value={selectedUniversity}
+                  onChange={(e) => setSelectedUniversity(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-navy-500 focus:border-navy-500"
+                >
+                  <option value="">-- Select a university --</option>
+                  {universities.map((uni) => (
+                    <option key={uni._id} value={uni.organization || uni.name}>
+                      {uni.organization || uni.name}
+                    </option>
+                  ))}
+                </select>
+                {selectedUniversity && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-100 px-2 py-1 rounded-full">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Registered Institution
+                    </span>
+                    <span className="text-xs text-navy-500">This university is registered in our system</span>
+                  </div>
+                )}
+                {universities.length === 0 && (
+                  <p className="text-xs text-amber-600 mt-1">No registered universities found in the system</p>
+                )}
+              </>
+            )}
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-navy-700 mb-1.5">Certificate File</label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-navy-400 cursor-pointer">

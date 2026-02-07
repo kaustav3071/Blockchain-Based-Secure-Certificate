@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const Certificate = require("../models/Certificate");
 const Verification = require("../models/Verification");
+const User = require("../models/User");
 const { getContract } = require("../config/blockchain");
 
 // Verify a certificate — BLOCKCHAIN IS THE SOURCE OF TRUTH
@@ -109,4 +110,19 @@ const getVerificationHistory = async (req, res) => {
   }
 };
 
-module.exports = { verifyCertificate, getVerificationHistory };
+// Get list of approved universities for verification dropdown
+const getUniversities = async (req, res) => {
+  try {
+    const universities = await User.find(
+      { role: "university", status: "approved" },
+      { name: 1, organization: 1, _id: 1 }
+    ).sort({ organization: 1 });
+
+    res.json(universities);
+  } catch (error) {
+    console.error("Error fetching universities:", error);
+    res.status(500).json({ message: "Failed to fetch universities" });
+  }
+};
+
+module.exports = { verifyCertificate, getVerificationHistory, getUniversities };
