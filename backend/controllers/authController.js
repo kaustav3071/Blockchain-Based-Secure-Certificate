@@ -137,8 +137,15 @@ const login = async (req, res) => {
       });
     }
 
+    if (user.role === "university" && user.status === "pending") {
+      return res.status(403).json({
+        message: "Your university account is pending admin approval. Please wait for the admin to approve your request.",
+        pendingApproval: true,
+      });
+    }
+
     if (user.role === "university" && user.status === "rejected") {
-      return res.status(403).json({ message: "Your university account has been rejected" });
+      return res.status(403).json({ message: "Your university account has been rejected by the admin." });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {

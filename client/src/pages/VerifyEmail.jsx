@@ -1,13 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import api from "../services/api";
+import axios from "axios";
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState("verifying"); // verifying | success | error
   const [message, setMessage] = useState("");
+  const calledRef = useRef(false);
 
   useEffect(() => {
+    // Prevent double-call in React StrictMode
+    if (calledRef.current) return;
+    calledRef.current = true;
+
     const token = searchParams.get("token");
     if (!token) {
       setStatus("error");
@@ -17,7 +22,8 @@ const VerifyEmail = () => {
 
     const verify = async () => {
       try {
-        const res = await api.get(`/auth/verify-email?token=${token}`);
+        // Use plain axios (no auth interceptor) for this public endpoint
+        const res = await axios.get(`/api/auth/verify-email?token=${token}`);
         setStatus("success");
         setMessage(res.data.message);
       } catch (error) {
