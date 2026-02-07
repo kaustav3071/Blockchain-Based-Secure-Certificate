@@ -1,5 +1,5 @@
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -31,10 +31,10 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-5">
-        <div className="text-right">
+        <Link to="/profile" className="text-right hover:opacity-80 transition-opacity">
           <p className="text-sm font-medium text-white">{user?.name}</p>
           <p className="text-[11px] text-navy-300">{roleLabel[user?.role] || user?.role}</p>
-        </div>
+        </Link>
         <div className="w-px h-8 bg-navy-600"></div>
         <button
           onClick={handleLogout}
