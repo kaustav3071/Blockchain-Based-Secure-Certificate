@@ -12,6 +12,7 @@ import VerificationHistory from "./pages/VerificationHistory";
 import AdminDashboard from "./pages/AdminDashboard";
 import ManageUsers from "./pages/ManageUsers";
 import AllCertificates from "./pages/AllCertificates";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function ProtectedRoute({ children, roles }) {
   const { user, loading } = useAuth();
@@ -46,6 +47,7 @@ function App() {
       <Routes>
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
 
         <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Navigate to="/dashboard" />} />

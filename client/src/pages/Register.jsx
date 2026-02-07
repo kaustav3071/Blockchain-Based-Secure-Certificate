@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
 import toast from "react-hot-toast";
 
 const Register = () => {
@@ -12,7 +13,7 @@ const Register = () => {
     organization: "",
   });
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const [registered, setRegistered] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,17 +24,22 @@ const Register = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const data = await register(formData);
-      if (formData.role === "university") {
-        toast.success("Registration submitted. Awaiting admin approval.");
-      } else {
-        toast.success("Registration successful");
-      }
-      navigate("/dashboard");
+      const res = await api.post("/auth/register", formData);
+      toast.success(res.data.message);
+      setRegistered(true);
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    try {
+      const res = await api.post("/auth/resend-verification", { email: formData.email });
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to resend email");
     }
   };
 
@@ -87,6 +93,34 @@ const Register = () => {
             <p className="text-sm text-navy-500 mt-1">Create your account</p>
           </div>
 
+          {registered ? (
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-bold text-navy-800 mb-2">Check your email</h2>
+              <p className="text-sm text-navy-500 mb-2">
+                We've sent a verification link to
+              </p>
+              <p className="text-sm font-semibold text-navy-800 mb-4">{formData.email}</p>
+              <p className="text-xs text-navy-400 mb-6">
+                Click the link in the email to verify your account. The link expires in 24 hours.
+              </p>
+              <button
+                onClick={handleResend}
+                className="text-sm text-navy-700 font-medium hover:underline"
+              >
+                Didn't receive it? Resend email
+              </button>
+              <div className="mt-6">
+                <Link to="/login" className="text-sm text-navy-800 font-semibold hover:underline">
+                  Go to Sign In
+                </Link>
+              </div>
+            </div>
+          ) : (
           <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-xl font-bold text-navy-800 mb-1">Create Account</h2>
             <p className="text-sm text-navy-500 mb-6">Get started with CertifyChain</p>
@@ -187,6 +221,7 @@ const Register = () => {
               </Link>
             </p>
           </div>
+          )}
         </div>
       </div>
     </div>
