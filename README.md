@@ -1,5 +1,3 @@
-<div align="center">
-
 # CertifyChain
 
 ### Blockchain-Based Secure Certificate Verification System
@@ -15,12 +13,26 @@
 
 [Live Demo](https://certifychainx.vercel.app) · [Report Bug](https://github.com/kaustav3071/Blockchain-Based-Secure-Certificate/issues) · [Request Feature](https://github.com/kaustav3071/Blockchain-Based-Secure-Certificate/issues)
 
-</div>
+---
+
+## 🏆 Hackathon Achievement
+
+**🥉 Third Position (2nd Runner Up) - THINK X Hackathon**
+
+This project was developed as part of the **THINK X Hackathon** and secured **Third Position** among numerous competing teams!
+
+### Team Members
+- **Kuresh Garbadawala** (Student ID: 23DCE032)
+- **Aliasgar Cyclewala** (Student ID: 23DCE018)  
+- **Kaustav Das** (Student ID: 23DCE020)
+
+We are incredibly proud to have been recognized for building a solution that addresses the critical problem of certificate fraud using blockchain technology. This achievement validates our innovative approach to creating a decentralized, tamper-proof certificate verification system.
 
 ---
 
-## Table of Contents
+## 📋 Table of Contents
 
+- [Hackathon Achievement](#-hackathon-achievement)
 - [About the Project](#about-the-project)
 - [Key Features](#key-features)
 - [System Architecture](#system-architecture)
@@ -72,37 +84,37 @@ The platform provides a seamless workflow: institutions issue certificates throu
 graph TB
     subgraph Client ["Client Layer"]
         direction TB
-        UI["React 18 + Tailwind CSS<br/>(Vite Dev Server)"]
-        CTX["AuthContext<br/>(JWT State Management)"]
+        UI["React 18 + Tailwind CSS (Vite Dev Server)"]
+        CTX["AuthContext (JWT State Management)"]
         API_SVC["Axios API Service"]
         UI --> CTX --> API_SVC
     end
-
+    
     subgraph Server ["Server Layer"]
         direction TB
         EXPRESS["Express.js REST API"]
-        MW["Middleware Stack<br/>JWT Auth | Role Check | Multer"]
-        CTRL["Controllers<br/>Auth | Certificate | Verify | Admin"]
+        MW["Middleware Stack JWT Auth | Role Check | Multer"]
+        CTRL["Controllers Auth | Certificate | Verify | Admin"]
         EXPRESS --> MW --> CTRL
     end
-
+    
     subgraph Data ["Data Layer"]
         direction LR
-        MONGO[("MongoDB Atlas<br/>(User, Certificate, Verification)")]
+        MONGO[("MongoDB Atlas (User, Certificate, Verification)")]
     end
-
+    
     subgraph Blockchain ["Blockchain Layer"]
         direction LR
-        ETHERS["Ethers.js v6<br/>(Provider + Signer)"]
-        CONTRACT["CertificateRegistry.sol<br/>(Solidity 0.8.19)"]
-        SEPOLIA["Ethereum Sepolia<br/>Testnet"]
+        ETHERS["Ethers.js v6 (Provider + Signer)"]
+        CONTRACT["CertificateRegistry.sol (Solidity 0.8.19)"]
+        SEPOLIA["Ethereum Sepolia Testnet"]
         ETHERS --> CONTRACT --> SEPOLIA
     end
-
+    
     API_SVC -- "HTTPS REST Calls" --> EXPRESS
     CTRL -- "Mongoose ODM" --> MONGO
     CTRL -- "Hash Transactions" --> ETHERS
-
+    
     style UI fill:#61DAFB,stroke:#333,stroke-width:2px,color:#000
     style EXPRESS fill:#8CC84B,stroke:#333,stroke-width:2px,color:#000
     style MONGO fill:#4DB33D,stroke:#333,stroke-width:2px,color:#fff
@@ -118,7 +130,7 @@ sequenceDiagram
     participant S as Backend API
     participant DB as MongoDB
     participant BC as Blockchain
-
+    
     Note over I, BC: Certificate Issuance
     I->>S: POST /api/certificates/issue (file + metadata)
     S->>S: Compute SHA-256 hash of file
@@ -126,7 +138,7 @@ sequenceDiagram
     BC-->>S: Transaction receipt + event
     S->>DB: Save certificate record
     S-->>I: Success response
-
+    
     Note over I, BC: Certificate Verification
     I->>S: POST /api/verify (file upload)
     S->>S: Compute SHA-256 hash of uploaded file
@@ -141,6 +153,7 @@ sequenceDiagram
 ## Tech Stack
 
 ### Frontend
+
 | Technology | Purpose |
 |---|---|
 | **React 18** | Component-based UI framework |
@@ -151,6 +164,7 @@ sequenceDiagram
 | **React Hot Toast** | Notification system |
 
 ### Backend
+
 | Technology | Purpose |
 |---|---|
 | **Node.js 18+** | JavaScript runtime |
@@ -163,6 +177,7 @@ sequenceDiagram
 | **Nodemailer** | Email verification service |
 
 ### Blockchain
+
 | Technology | Purpose |
 |---|---|
 | **Solidity 0.8.19** | Smart contract language |
@@ -170,6 +185,7 @@ sequenceDiagram
 | **Ethereum Sepolia** | Test network for contract deployment |
 
 ### DevOps & Hosting
+
 | Technology | Purpose |
 |---|---|
 | **Vercel** | Frontend and backend deployment |
@@ -182,18 +198,18 @@ sequenceDiagram
 
 ```
 Blockchain-Based-Secure-Certificate/
-├── client/                          # React Frontend
-│   ├── public/                      # Static assets
+├── client/                     # React Frontend
+│   ├── public/                # Static assets
 │   ├── src/
-│   │   ├── components/              # Reusable UI components
+│   │   ├── components/        # Reusable UI components
 │   │   │   ├── Footer.jsx
 │   │   │   ├── Layout.jsx
 │   │   │   ├── Navbar.jsx
 │   │   │   ├── Sidebar.jsx
 │   │   │   └── UniversityFooter.jsx
 │   │   ├── context/
-│   │   │   └── AuthContext.jsx      # Authentication state management
-│   │   ├── pages/                   # Application pages
+│   │   │   └── AuthContext.jsx    # Authentication state management
+│   │   ├── pages/            # Application pages
 │   │   │   ├── AdminDashboard.jsx
 │   │   │   ├── AllCertificates.jsx
 │   │   │   ├── Dashboard.jsx
@@ -207,52 +223,52 @@ Blockchain-Based-Secure-Certificate/
 │   │   │   ├── VerifyCertificate.jsx
 │   │   │   └── VerifyEmail.jsx
 │   │   ├── services/
-│   │   │   └── api.js               # Axios API configuration
-│   │   ├── App.jsx                  # Root component with routing
-│   │   ├── index.css                # Global styles
-│   │   └── main.jsx                 # Entry point
+│   │   │   └── api.js        # Axios API configuration
+│   │   ├── App.jsx           # Root component with routing
+│   │   ├── index.css         # Global styles
+│   │   └── main.jsx          # Entry point
 │   ├── index.html
 │   ├── package.json
 │   ├── tailwind.config.js
 │   ├── vite.config.js
-│   └── vercel.json                  # Vercel deployment config
+│   └── vercel.json           # Vercel deployment config
 │
-├── backend/                         # Node.js Backend
+├── backend/                   # Node.js Backend
 │   ├── config/
-│   │   ├── blockchain.js            # Ethers.js provider & contract setup
-│   │   ├── contractData.json        # Deployed contract address & ABI
-│   │   └── db.js                    # MongoDB connection
+│   │   ├── blockchain.js     # Ethers.js provider & contract setup
+│   │   ├── contractData.json # Deployed contract address & ABI
+│   │   └── db.js            # MongoDB connection
 │   ├── controllers/
-│   │   ├── adminController.js       # Admin operations
-│   │   ├── authController.js        # Auth & registration logic
+│   │   ├── adminController.js      # Admin operations
+│   │   ├── authController.js       # Auth & registration logic
 │   │   ├── certificateController.js # Issue & manage certificates
-│   │   └── verifyController.js      # Certificate verification logic
+│   │   └── verifyController.js     # Certificate verification logic
 │   ├── middleware/
-│   │   ├── auth.js                  # JWT authentication middleware
-│   │   └── roleCheck.js             # Role-based access control
+│   │   ├── auth.js          # JWT authentication middleware
+│   │   └── roleCheck.js     # Role-based access control
 │   ├── models/
-│   │   ├── Certificate.js           # Certificate schema
-│   │   ├── User.js                  # User schema
-│   │   └── Verification.js          # Verification log schema
+│   │   ├── Certificate.js   # Certificate schema
+│   │   ├── User.js          # User schema
+│   │   └── Verification.js  # Verification log schema
 │   ├── routes/
 │   │   ├── adminRoutes.js
 │   │   ├── authRoutes.js
 │   │   ├── certificateRoutes.js
 │   │   └── verifyRoutes.js
 │   ├── utils/
-│   │   ├── hashGenerator.js         # SHA-256 hash computation
-│   │   └── sendEmail.js             # Email utility
-│   ├── server.js                    # Express app entry point
-│   ├── seedAdmin.js                 # Admin seeder script
+│   │   ├── hashGenerator.js # SHA-256 hash computation
+│   │   └── sendEmail.js     # Email utility
+│   ├── server.js            # Express app entry point
+│   ├── seedAdmin.js         # Admin seeder script
 │   ├── package.json
-│   └── vercel.json                  # Vercel serverless config
+│   └── vercel.json          # Vercel serverless config
 │
-├── blockchain/                      # Hardhat Smart Contracts
+├── blockchain/                # Hardhat Smart Contracts
 │   ├── contracts/
 │   │   └── CertificateRegistry.sol  # Main smart contract
 │   ├── scripts/
-│   │   └── deploy.js                # Deployment script
-│   ├── artifacts/                   # Compiled contract artifacts
+│   │   └── deploy.js        # Deployment script
+│   ├── artifacts/           # Compiled contract artifacts
 │   ├── cache/
 │   ├── hardhat.config.js
 │   └── package.json
@@ -386,6 +402,7 @@ The `CertificateRegistry.sol` contract provides the following on-chain capabilit
 ## API Endpoints
 
 ### Authentication
+
 | Method | Endpoint | Description |
 |---|---|---|
 | `POST` | `/api/auth/register` | Register a new user |
@@ -394,6 +411,7 @@ The `CertificateRegistry.sol` contract provides the following on-chain capabilit
 | `GET` | `/api/auth/profile` | Get current user profile |
 
 ### Certificates
+
 | Method | Endpoint | Description |
 |---|---|---|
 | `POST` | `/api/certificates/issue` | Issue a new certificate (Institution) |
@@ -401,12 +419,14 @@ The `CertificateRegistry.sol` contract provides the following on-chain capabilit
 | `DELETE` | `/api/certificates/:id/revoke` | Revoke a certificate |
 
 ### Verification
+
 | Method | Endpoint | Description |
 |---|---|---|
 | `POST` | `/api/verify` | Verify a certificate by file upload |
 | `GET` | `/api/verify/history` | Get verification history |
 
 ### Admin
+
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/admin/users` | List all users |
@@ -434,10 +454,12 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-<div align="center">
+## 🙏 Acknowledgments
+
+Special thanks to the **THINK X Hackathon** organizers for providing the platform to showcase this innovative solution. This achievement motivates us to continue developing blockchain-based solutions that address real-world problems.
+
+---
 
 **[Live Demo](https://certifychainx.vercel.app)** · **[GitHub Repository](https://github.com/kaustav3071/Blockchain-Based-Secure-Certificate)**
 
-Built with blockchain technology for a fraud-free future.
-
-</div>
+*Built with blockchain technology for a fraud-free future.*
